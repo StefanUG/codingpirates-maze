@@ -1,0 +1,26 @@
+[project]
+name = "codingpirates-maze"
+version = "0.1.0"
+description = "Turtle-graphics maze framework and code.org level importer used by Coding Pirates Python puzzles"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/StefanUG/stefans-code-org-maze"
+
+[tool.poetry]
+packages = [
+    {include = "maze", from = "src"},
+    {include = "importer", from = "src"},
+]
+
+# Only needed to run the importer (dev tool, not required by students installing this package)
+[tool.poetry.group.importer.dependencies]
+Jinja2 = "*"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
