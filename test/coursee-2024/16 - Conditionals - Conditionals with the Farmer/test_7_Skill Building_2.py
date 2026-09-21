@@ -1,0 +1,36 @@
+from maze import Puzzle, Farmer
+
+maze = Puzzle.from_file("courseE_farmer_ramp11b_2024")
+farmer: Farmer = maze.player
+
+'''
+https://studio.code.org/s/coursee-2024/lessons/16/levels/7
+
+Let's try that again, but with more piles!
+
+---
+Here are elements from the toolbox.
+You can use them in your code:
+```
+farmer.forward()
+farmer.right()
+farmer.left()
+farmer.remove() # limit: 1
+while farmer.at_pile():
+    # Do this
+for i in range(5):
+    # Do this
+# 
+```
+'''
+
+# When run
+
+# Start
+for i in range(3):
+    farmer.forward()
+    while farmer.at_pile():
+        farmer.remove()
+
+# Keep this
+Puzzle.done()
