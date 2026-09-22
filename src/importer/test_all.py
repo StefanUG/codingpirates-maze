@@ -13,12 +13,13 @@ def run_script(script_path):
 
 def visit_dir(dir):
     for file in os.listdir(dir):
-        if os.path.isdir(file):
-            visit_dir(os.path.join(dir, file))
+        path = os.path.join(dir, file)
+        if os.path.isdir(path):
+            visit_dir(path)
         elif file.endswith(".py") and file != "test_all.py":
-            run_script(os.path.join(dir, file))
+            run_script(path)
 
 
 if __name__ == "__main__":
-    visit_dir(".")
+    visit_dir(os.path.dirname(os.path.abspath(__file__)))
     print("DONE")
