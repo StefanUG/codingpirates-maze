@@ -1,0 +1,34 @@
+from maze import Puzzle, Bird
+
+maze = Puzzle.from_file("courseD_maze_ramp5d")
+bird: Bird = maze.player
+
+'''
+https://studio.code.org/s/coursee-2017/lessons/2/levels/10
+
+Get the bird to the pig.
+
+---
+Here are elements from the toolbox.
+You can use them in your code:
+```
+bird.forward()
+bird.left()
+bird.right()
+for i in range(5):
+    # Do this
+```
+'''
+
+# When run
+
+# Start
+bird.forward()
+bird.forward()
+bird.forward()
+bird.left()
+bird.forward()
+bird.forward()
+
+# Keep this
+Puzzle.done()
