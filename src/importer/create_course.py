@@ -175,7 +175,7 @@ def generate_courses(coursename, source_dir, target_dir, maze_dir):
                     lesson_dirname = f"{course_dirname}/{lesson_dirname}"
 
                     # Mirrored directory name for the lesson (maze repo, test_ solution files only)
-                    maze_course_dirname = f"{args.maze_dir}/{lesson_group['seeding_key']['script.name']}".lower()
+                    maze_course_dirname = f"{args.maze_dir}/test/{lesson_group['seeding_key']['script.name']}".lower()
                     maze_lesson_dirname = f"{maze_course_dirname}/{sanitize_filename(f'{lesson_seq} - {group_name} - {lesson_key}')}"
 
                     # Shared flat folder for all packaged level json files, in the maze repo
