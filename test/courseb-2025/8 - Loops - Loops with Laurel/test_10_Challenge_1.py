@@ -1,0 +1,42 @@
+from maze import Puzzle, Collector
+
+maze = Puzzle.from_file("courseB_collector_loops8_2025")
+collector: Collector = maze.player
+
+'''
+https://studio.code.org/s/courseb-2025/lessons/8/levels/10
+
+**Challenge:** The treasure goes all the way down these stairs!  Write the code to help Laurel get it all.
+
+---
+Here are elements from the toolbox.
+You can use them in your code:
+```
+collector.east()
+collector.west()
+collector.north()
+collector.south()
+collector.collect()
+for i in range(???):
+    # Do this
+```
+'''
+
+# When run
+
+# Start
+for i in range(3):
+    collector.south()
+    collector.collect()
+for i in range(2):
+    collector.east()
+    collector.collect()
+for i in range(3):
+    collector.south()
+    collector.collect()
+for i in range(2):
+    collector.east()
+    collector.collect()
+
+# Keep this
+Puzzle.done()
