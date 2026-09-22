@@ -101,6 +101,8 @@ def find_course_file(coursename, source_dir):
 #         self.dir_name = sanitize_filename(name.lower())
 
 def generate_courses(coursename, source_dir, target_dir, maze_dir):
+    ignore_cc_license = os.environ.get("IGNORE_CC_LICENSE", "").lower() in ("1", "true", "yes")
+
     coursefile = find_course_file(coursename, source_dir)
     print("Found course file", coursefile)
     with open(coursefile) as f:
@@ -182,7 +184,7 @@ def generate_courses(coursename, source_dir, target_dir, maze_dir):
                     maze_levels_dirname = f"{args.maze_dir}/src/maze/levels"
 
                     # Only continue if the lesson is under Creative Commons license
-                    if cc_license:
+                    if cc_license or ignore_cc_license:
                         os.makedirs(lesson_dirname, exist_ok=True)
 
                         # TODO Make Lesson MD file for the lesson
