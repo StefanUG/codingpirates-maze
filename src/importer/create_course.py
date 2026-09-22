@@ -127,7 +127,12 @@ def generate_courses(coursename, source_dir, target_dir, maze_dir):
             lesson_group_seq += 1
 
             # Get relevant properties from lesson_group
-            group_name = lesson_group["properties"]["display_name"]
+            print(lesson_group)
+            group_name = coursename
+            try:
+                group_name = lesson_group["properties"]["display_name"]
+            except KeyError:
+                pass
             lesson_group_key = lesson_group["key"]
 
             # Directory name for Group
