@@ -1,6 +1,6 @@
 [project]
 name = "codingpirates-maze"
-version = "0.1.0"
+version = "0.3.0"
 description = "Turtle-graphics maze framework and code.org level importer used by Coding Pirates Python puzzles"
 readme = "README.md"
 license = "Apache-2.0"
