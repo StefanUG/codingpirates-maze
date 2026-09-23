@@ -38,7 +38,7 @@ here, using alternative artwork since code.org holds exclusive rights to their o
 
 # Local development
 
-1. `poetry install --with importer` (the `importer` group pulls in Jinja2, only needed to run the
+1. `uv sync --group importer` (the `importer` group pulls in Jinja2, only needed to run the
    importer; the published `codingpirates-maze` package has no runtime dependencies).
 2. Run the regression tests: `python test_all.py` (recurses into every `course*-*/**/test_*.py`).
 3. Run the importer, e.g.:
