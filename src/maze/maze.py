@@ -4,17 +4,19 @@ import math
 import random
 import functools
 import json
-import os
 import sys
-import importlib.resources
 
-_TESTMODE = os.environ.get('TESTMODE')
+from .resources import get_provider
+
+try:
+    # os.environ is unavailable under Skulpt (import os raises NotImplementedError there)
+    import os
+    _TESTMODE = os.environ.get('TESTMODE')
+except Exception:
+    _TESTMODE = None
 
 _TRACER_DELAY = 0 if _TESTMODE == "True" else 15
 _TRACER_N = 0 if _TESTMODE == "True" else 1
-
-# Get the directory of this Python file
-_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
 
 class Pen(turtle.Turtle):
@@ -313,15 +315,9 @@ class Maze:
         _TRACER_DELAY = 0
         _TRACER_N = 0
 
-    # @staticmethod
-    # def shapefile(name: str, ext: str = ".gif") -> str:
-    #     name = os.path.join(Maze.instance.maze_type.subfolder, name)
-    #     return os.path.join(_DIR_PATH, "images", name + ext)
-
     @staticmethod
     def shapefile(name: str, ext: str = ".gif") -> str:
-        with importlib.resources.path('maze.images.' + Maze.instance.maze_type.subfolder, name + ext) as image_path:
-            return image_path.__str__()
+        return get_provider().get_shape_source(Maze.instance.maze_type.subfolder, name, ext)
 
     instance = None
 
