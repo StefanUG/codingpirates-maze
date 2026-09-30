@@ -335,12 +335,10 @@ class Maze:
 
         # Under Skulpt, screen.setup() re-applies world coordinates and wipes any drawing
         # (bgpic, or a Turtle's rendered state) already on the canvas, so establish the
-        # screen/coordinates before constructing Pen or any other Turtle subclass.
+        # screen/coordinates before any Turtle subclass gets constructed.
         self.screen.bgcolor("white")
         self.screen.setup(410, 410)  # TODO Add dynamic size
         self.screen.tracer(0, 0)
-
-        self.pen = Pen()
 
         maze_type.setup(level, self)
 
@@ -426,6 +424,10 @@ class Maze:
             direction = Direction(direction)
             self.player._turtle.setheading(direction.to_heading())
 
+        # Construct Pen last: Skulpt z-orders turtles by construction time, so this must
+        # come after every maze/player turtle to render success/failure text on top.
+        self.pen = Pen()
+
         self.update()
 
     def update(self):
@@ -491,11 +493,17 @@ class Player:
     maze: Maze = None
     instance = None
 
-    _turtle = turtle.Turtle()
+    # Constructed lazily in __init__ (not at class-definition/import time) so under Skulpt,
+    # where sprite z-order is fixed at Turtle-construction time, it's created after every
+    # cell/path/wall turtle instead of always being the earliest (and thus bottom-most) one.
+    _turtle = None
 
     def __init__(self, maze):
         Player.instance = self
         self.maze = maze
+
+        if Player._turtle is None:
+            Player._turtle = turtle.Turtle()
 
         self._turtle.penup()
         self._turtle.speed(1)
