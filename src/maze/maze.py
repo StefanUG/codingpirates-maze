@@ -333,13 +333,16 @@ class Maze:
         self.cells_to_visit = []
         self.visited = []
 
-        self.pen = Pen()
-
-        maze_type.setup(level, self)
-
+        # Under Skulpt, screen.setup() re-applies world coordinates and wipes any drawing
+        # (bgpic, or a Turtle's rendered state) already on the canvas, so establish the
+        # screen/coordinates before constructing Pen or any other Turtle subclass.
         self.screen.bgcolor("white")
         self.screen.setup(410, 410)  # TODO Add dynamic size
         self.screen.tracer(0, 0)
+
+        self.pen = Pen()
+
+        maze_type.setup(level, self)
 
         self._setup_maze(level)
 

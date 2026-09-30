@@ -17,7 +17,7 @@ IS_SKULPT = platform.python_implementation() == "Skulpt"
 
 # Keep this aligned with the `version` in pyproject.toml and the matching GitHub release tag
 # (see README) so the CDN URL below actually resolves to the release these assets ship with.
-_PACKAGE_VERSION = "0.4.0"
+_PACKAGE_VERSION = "0.4.1"
 _GITHUB_REPO = "StefanUG/codingpirates-maze"
 
 
