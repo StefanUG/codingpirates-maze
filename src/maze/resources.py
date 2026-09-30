@@ -37,6 +37,10 @@ class ResourceProvider:
         filesystem path (desktop) or an image URL (browser)."""
         raise NotImplementedError
 
+    def get_setting(self, name: str, default=None):
+        """Return a configuration setting by name, or the default if not found."""
+        raise NotImplementedError
+
 
 class DefaultFilesystemProvider(ResourceProvider):
     """Reproduces the pre-refactor filesystem-based resolution exactly."""
@@ -79,6 +83,11 @@ class DefaultFilesystemProvider(ResourceProvider):
         with importlib.resources.path("maze.images." + subfolder, name + ext) as image_path:
             return str(image_path)
 
+    def get_setting(self, name: str, default=None):
+        """Return a configuration setting by name, or the default if not found."""
+        import os
+        return os.getenv(name, default)
+
 
 class SkulptBrowserProvider(ResourceProvider):
     """Only ever instantiated when IS_SKULPT is True."""
@@ -97,6 +106,10 @@ class SkulptBrowserProvider(ResourceProvider):
     def get_shape_source(self, subfolder: str, name: str, ext: str = ".gif") -> str:
         # No fetch needed -- Skulpt's turtle loads images from a URL itself.
         return f"{self.asset_base_url}/images/{subfolder}/{name}{ext}"
+
+    def get_setting(self, name: str, default=None):
+        """os not available in Skulpt; simply return the default."""
+        return default
 
 
 _provider: ResourceProvider = (

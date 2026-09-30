@@ -8,12 +8,7 @@ import sys
 
 from .resources import get_provider
 
-try:
-    # os.environ is unavailable under Skulpt (import os raises NotImplementedError there)
-    import os
-    _TESTMODE = os.environ.get('TESTMODE')
-except Exception:
-    _TESTMODE = None
+_TESTMODE = get_provider().get_setting('TESTMODE')
 
 _TRACER_DELAY = 0 if _TESTMODE == "True" else 15
 _TRACER_N = 0 if _TESTMODE == "True" else 1

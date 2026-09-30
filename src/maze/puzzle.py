@@ -34,4 +34,7 @@ class Puzzle:
 
     @staticmethod
     def done():
+        if (get_provider().get_setting('SCREENSHOT', "false").lower() == "true"):
+            from . import screencapture
+            screencapture.capture()
         Maze.instance.done()
