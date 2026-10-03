@@ -6,12 +6,21 @@ import functools
 import json
 import sys
 
-from .resources import get_provider
+from .resources import get_provider, IS_SKULPT
 
 _TESTMODE = get_provider().get_setting('TESTMODE')
 
 _TRACER_DELAY = 0 if _TESTMODE == "True" else 15
 _TRACER_N = 0 if _TESTMODE == "True" else 1
+
+
+def _hold_window(screen):
+    """Keep the window open on desktop; under Skulpt, mainloop() returns immediately
+    instead of blocking, which would let code after the puzzle keep running (e.g. walking
+    through walls to a false win). Raise instead so the browser halts execution."""
+    if IS_SKULPT:
+        raise Exception("Maze finished: stopping further code execution.")
+    screen.mainloop()
 
 
 class Pen(turtle.Turtle):
@@ -189,6 +198,9 @@ class Direction(Enum):
         if value > 3:
             value = 0
         return Direction(value)
+
+    def opposite(self):
+        return self.left().left()
 
     def to_heading(self):
         """
@@ -549,7 +561,7 @@ class Player:
                 self._turtle.undo()
             self._turtle.color("black", "red")
             self.maze.pen.draw_failure()
-            self._turtle.getscreen().mainloop()
+            _hold_window(self._turtle.getscreen())
         if _TESTMODE == "True":
             sys.exit()
 
@@ -560,7 +572,7 @@ class Player:
             self._turtle.speed(8)
             self._turtle.right(360)
             self._turtle.left(360)
-            self._turtle.getscreen().mainloop()
+            _hold_window(self._turtle.getscreen())
         if _TESTMODE == "True":
             sys.exit()
 
@@ -596,14 +608,20 @@ class Player:
 
     def backward(self, steps=1):
         for i in range(steps):
+            valid_move = self.path_behind()
             self._turtle.backward(50)
-            self._check()
+            if not valid_move:
+                self._fail(undo=True, reason="no path behind")
+            else:
+                self._check()
 
-    def right(self):
-        self._turtle.right(90)
+    def right(self, turns=1):
+        for i in range(turns):
+            self._turtle.right(90)
 
-    def left(self):
-        self._turtle.left(90)
+    def left(self, turns=1):
+        for i in range(turns):
+            self._turtle.left(90)
 
     def east(self):
         self._move_compass_direction(Direction.EAST)
@@ -633,6 +651,11 @@ class Player:
         coords = self.gridcoords()
         head = self._turtle.heading()
         return self.maze.is_path_in_heading(coords, head)
+
+    def path_behind(self):
+        coords = self.gridcoords()
+        d = Direction.from_heading(self._turtle.heading()).opposite()
+        return self.maze.is_path_in_heading(coords, d.to_heading())
 
     def path_left(self):
         coords = self.gridcoords()
